@@ -5,9 +5,7 @@ export interface ICodeParsingResult<
 	TokenType extends Token,
 	DiagnosticType,
 	InterpretationType> {
-
-	getTokenAt(offset: number): TokenType | undefined;
-	tokens: TokenType[];
+	token: TokenType;
 	diagnostics: IDiagnostic<DiagnosticType>[];
 	interpretation: InterpretationType;
 	text: string;

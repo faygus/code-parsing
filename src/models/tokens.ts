@@ -13,6 +13,18 @@ export class TokenUnit {
 export abstract class Token {
 	constructor(public tokenUnit: TokenUnit) {
 	}
+
+	incrementOffset(value: number): void {
+		this.tokenUnit.offset += value;
+		for (const token of this.getContent()) {
+			if (!token) return;
+			token.incrementOffset(value);
+		}
+	}
+
+	protected getContent(): Token[] {
+		return [];
+	}
 }
 
 export abstract class TokenWithContext<T> extends Token {

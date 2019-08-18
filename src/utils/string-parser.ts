@@ -20,6 +20,25 @@ export class StringParser {
 		return this;
 	}
 
+	/**
+	 * returns false if meets except string 
+	 */
+	navigateToFirstNonEmptyCharExcept(except: string): boolean {
+		const firstOffset = this._offset;
+		while (true) {
+			const currentChar = this.currentChar;
+			if (!currentChar || !StringUtils.charIsEmpty(currentChar)) {
+				return true;
+			}
+			this._offset++;
+			const str = this._data.slice(firstOffset, this._offset);
+			if (except && str.endsWith(except)) {
+				this.previous(except.length);
+				return false;
+			}
+		}
+	}
+
 	navigateToLastNonEmptyChar(): StringParser {
 		const nextString = this.nextString.trimRight();
 		this._offset += nextString.length - 1;
@@ -38,9 +57,13 @@ export class StringParser {
 		return this;
 	}
 
-	previous(): StringParser {
+	previous(length?: number): StringParser {
 		if (this._offset === 0) return this;
-		this._offset --;
+		const delta = length === undefined ? 1 : length;
+		this._offset -= delta;
+		if (this._offset < 0) {
+			this._offset = 0;
+		}
 		return this;
 	}
 
@@ -103,13 +126,17 @@ export class StringParser {
 				}, '');
 				if (endPattern) { // TODO duplicated code
 					this._offset++;
+					const longestEndPattern = data.reduce((prev, next) => {
+						return (next && next.length > endPattern.length && next.startsWith(endPattern)) ? next : endPattern;
+					}, endPattern);
+					this._offset += longestEndPattern.length - endPattern.length;
 					return {
-						text: content.slice(0, this._offset - firstOffset - endPattern.length),
+						text: content.slice(0, this._offset - firstOffset - longestEndPattern.length),
 						range: {
 							start: firstOffset,
-							end: this._offset - endPattern.length
+							end: this._offset - longestEndPattern.length
 						},
-						stopPattern: endPattern
+						stopPattern: longestEndPattern
 					};
 				}
 			} else {

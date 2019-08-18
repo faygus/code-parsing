@@ -3,18 +3,18 @@ import { IDiagnostic } from "../interfaces/i-diagnostic";
 import { Token } from "../models/tokens";
 import { ParsingResult } from "./parsing-result";
 
-export class ParsingResultBuilder<
+/*export class ParsingResultBuilder<
 	TokenType extends Token,
 	DiagnosticType,
 	InterpretationType> {
 
-	protected _tokens: TokenType[] = [];
+	protected _token: TokenType;
 	protected _diagnostics: IDiagnostic<DiagnosticType>[] = [];
 	protected _interpretation: InterpretationType;
 	protected _text: string;
 
-	addToken(token: TokenType): void {
-		this._tokens.push(token);
+	setToken(token: TokenType): void {
+		this._token = token;
 	}
 
 	addDiagnostic(diagnostic: IDiagnostic<DiagnosticType>): void {
@@ -26,21 +26,22 @@ export class ParsingResultBuilder<
 	}
 
 	getResult(): ICodeParsingResult<TokenType, DiagnosticType, InterpretationType> {
-		return new ParsingResult(this._text, this._tokens, this._diagnostics, this._interpretation);
+		return new ParsingResult(this._text, this._token, this._diagnostics, this._interpretation);
 	}
 
 	setInterpretation(value: InterpretationType): void {
 		this._interpretation = value;
 	}
 
-	merge(data: ICodeParsingResult<TokenType, DiagnosticType, InterpretationType>, offset: number): void {
-		this._tokens.push(...data.tokens.map(t => {
-			(<any>t.tokenUnit)._offset += offset; // TODO
-			return t;
-		}));
-		this._diagnostics.push(...data.diagnostics.map(d => {
-			d.offset += offset;
-			return d;
-		}));
-	}
+	//merge(data: ICodeParsingResult<TokenType, DiagnosticType, InterpretationType>, offset: number): void {
+		//this._tokens.push(...data.tokens.map(t => {
+			//(<any>t.tokenUnit)._offset += offset; // TODO
+			//return t;
+		//}));
+		//this._diagnostics.push(...data.diagnostics.map(d => {
+			//d.offset += offset;
+			//return d;
+		//}));
+	//}
 }
+*/
